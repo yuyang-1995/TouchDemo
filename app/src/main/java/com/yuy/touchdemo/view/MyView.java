@@ -15,6 +15,7 @@ import android.view.View;
  * Version:
  */
 public class MyView  extends View {
+
     private static final String TAG = "MyView";
 
     public MyView(Context context, AttributeSet attrs)
@@ -28,16 +29,20 @@ public class MyView  extends View {
 
         final int action = event.getAction();
 
-        switch (action)
-        {
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
                 Log.e(TAG, "dispatchTouchEvent - ACTION_DOWN");
+                //避免父View 对事件的拦截
+//                getParent().requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_MOVE:
                 Log.e(TAG, "dispatchTouchEvent - ACTION_MOVE");
                 break;
             case MotionEvent.ACTION_UP:
                 Log.e(TAG, "dispatchTouchEvent - ACTION_UP");
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                Log.e(TAG, "onTouchEvent - ACTION_CANCEL");
                 break;
         }
 
@@ -50,15 +55,15 @@ public class MyView  extends View {
     public boolean onTouchEvent(MotionEvent event)
     {
         final int action = event.getAction();
-        //Log.e(TAG,MotionEvent.actionToString(event.getAction()));
+//        Log.e(TAG,MotionEvent.actionToString(event.getAction()));
         switch (action)
         {
             case MotionEvent.ACTION_DOWN:
                 Log.e(TAG, "onTouchEvent - ACTION_DOWN");
+
                 //避免父View 对事件的拦截
-                //getParent().requestDisallowInterceptTouchEvent(true);
-                // return true ;
-                break;
+                getParent().requestDisallowInterceptTouchEvent(true);
+//                break;
             case MotionEvent.ACTION_MOVE:
                 Log.e(TAG, "onTouchEvent - ACTION_MOVE");
                 break;
@@ -69,7 +74,7 @@ public class MyView  extends View {
                 Log.e(TAG, "onTouchEvent - ACTION_CANCEL");
                 break;
         }
-        return super.onTouchEvent(event);
-//        return true ;
+
+        return true;
     }
 }
